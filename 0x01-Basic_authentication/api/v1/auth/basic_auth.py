@@ -3,6 +3,8 @@
 Manages basic authentication
 """
 from api.v1.auth.auth import Auth
+from typing import TypeVar
+from models.user import User
 import base64
 
 
@@ -61,3 +63,20 @@ class BasicAuth(Auth):
             return None, None
         decoded_header = decoded_base64_authorization_header.split(':')
         return decoded_header[0], decoded_header[1]
+
+    def user_object_from_credentials(
+        self,
+        user_email: str,
+        user_pwd: str
+    ) -> TypeVar('User'):
+        """
+        Return user instance based on their email & password
+        """
+        if user_email is None or not isinstance(user_email, str):
+            return None
+        if user_pwd is None or not isinstance(user_pwd, str):
+            return None
+        user = User.search({'email': user_email})
+        if not user or not user[0].is_valid_password(user_pwd):
+            return None
+        return user[0]
