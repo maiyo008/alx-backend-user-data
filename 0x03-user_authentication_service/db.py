@@ -57,3 +57,25 @@ class DB:
             raise e
         except InvalidRequestError as e:
             raise e
+
+    def update_user(self, user_id: str, **kwargs) -> None:
+        """
+        Update user
+        """
+        allowed_attr = [
+            'email',
+            'hashed_password',
+            'session_id',
+            'reset_token'
+        ]
+        try:
+            user = self.find_user_by(id=user_id)
+            for attr, value in kwargs.items():
+                if attr not in allowed_attr:
+                    raise ValueError("Invalid attribute: {}", attr)
+                setattr(user, attr, value)
+            self._session.commit()
+        except NoResultFound:
+            return None
+        except InvalidRequestError:
+            self._session.rollback()
