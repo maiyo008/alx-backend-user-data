@@ -49,10 +49,12 @@ class DB:
         """
         Find user
         """
+        if not kwargs:
+            raise InvalidRequestError
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
             if user is None:
-                raise NoResultFound("No user found for the given criteria")
+                raise NoResultFound
             return user
         except NoResultFound as e:
             raise e
@@ -73,7 +75,7 @@ class DB:
             user = self.find_user_by(id=user_id)
             for attr, value in kwargs.items():
                 if attr not in allowed_attr:
-                    raise ValueError("Invalid attribute: {}", attr)
+                    raise ValueError
                 setattr(user, attr, value)
             self._session.commit()
         except NoResultFound:
