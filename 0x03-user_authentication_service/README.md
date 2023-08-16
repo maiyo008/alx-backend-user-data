@@ -60,3 +60,14 @@ root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# pyth
 1
 Password updated
 </Details>
+
+### Task 3. Hash password
+In this task you will define a _hash_password method that takes in a password string arguments and returns bytes.
+
+The returned bytes is a salted hash of the input password, hashed with bcrypt.hashpw.
+
+Test result
+<Details>
+root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_4.py
+b'$2b$12$p6RYNO6jDLcFqfFkUbMh5OcRdFruSxcK967XCtRcAQ/3ShfxYLgnW'
+</Details>
