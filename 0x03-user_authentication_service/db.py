@@ -51,15 +51,10 @@ class DB:
         """
         if not kwargs:
             raise InvalidRequestError
-        try:
-            user = self._session.query(User).filter_by(**kwargs).first()
-            if user is None:
-                raise NoResultFound
-            return user
-        except NoResultFound as e:
-            raise e
-        except InvalidRequestError as e:
-            raise e
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if user is None:
+            raise NoResultFound
+        return user
 
     def update_user(self, user_id: str, **kwargs) -> None:
         """
@@ -71,14 +66,9 @@ class DB:
             'session_id',
             'reset_token'
         ]
-        try:
-            user = self.find_user_by(id=user_id)
-            for attr, value in kwargs.items():
-                if attr not in allowed_attr:
-                    raise ValueError
-                setattr(user, attr, value)
-            self._session.commit()
-        except NoResultFound:
-            return None
-        except InvalidRequestError:
-            self._session.rollback()
+        user = self.find_user_by(id=user_id)
+        for attr, value in kwargs.items():
+            if attr not in allowed_attr:
+                raise ValueError
+            setattr(user, attr, value)
+        self._session.commit()
