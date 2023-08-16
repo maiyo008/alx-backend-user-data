@@ -60,15 +60,9 @@ class DB:
         """
         Update user
         """
-        allowed_attr = [
-            'email',
-            'hashed_password',
-            'session_id',
-            'reset_token'
-        ]
         user = self.find_user_by(id=user_id)
         for attr, value in kwargs.items():
-            if attr not in allowed_attr:
+            if not hasattr(user, attr):
                 raise ValueError
             setattr(user, attr, value)
         self._session.commit()
