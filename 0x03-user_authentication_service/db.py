@@ -43,39 +43,3 @@ class DB:
         self._session.add(user)
         self._session.commit()
         return user
-
-    def find_user_by(self, **kwargs):
-        """
-        Find user
-        """
-        try:
-            user = self._session.query(User).filter_by(**kwargs).first()
-            if user is None:
-                raise NoResultFound("No user found for the given criteria")
-            return user
-        except NoResultFound as e:
-            raise e
-        except InvalidRequestError as e:
-            raise e
-
-    def update_user(self, user_id: str, **kwargs) -> None:
-        """
-        Update user
-        """
-        allowed_attr = [
-            'email',
-            'hashed_password',
-            'session_id',
-            'reset_token'
-        ]
-        try:
-            user = self.find_user_by(id=user_id)
-            for attr, value in kwargs.items():
-                if attr not in allowed_attr:
-                    raise ValueError("Invalid attribute: {}", attr)
-                setattr(user, attr, value)
-            self._session.commit()
-        except NoResultFound:
-            return None
-        except InvalidRequestError:
-            self._session.rollback()
