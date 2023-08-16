@@ -22,7 +22,7 @@ users.session_id: VARCHAR(250)
 users.reset_token: VARCHAR(250)
 </Details>
 
-### Task 1.1. create user
+### Task 1. create user
 Implement the add_user method, which has two required string arguments: email and hashed_password, and returns a User object. The method should save the user to the database. No validations are required at this stage.
 
 Test result
@@ -31,4 +31,18 @@ root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# pyth
 1
 2
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# 
+</Details>
+
+### Task 2. Find user
+In this task you will implement the DB.find_user_by method. This method takes in arbitrary keyword arguments and returns the first row found in the users table as filtered by the method’s input arguments. No validation of input arguments required at this point.
+
+Make sure that SQLAlchemy’s NoResultFound and InvalidRequestError are raised when no results are found, or when wrong query arguments are passed, respectively.
+
+Test result
+<Details>
+root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_2.py
+1
+1
+Not found
+Invalid
 </Details>
