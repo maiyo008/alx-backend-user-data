@@ -192,3 +192,18 @@ root@2c462bd13a86:~#
 ```
 </Details>
 
+### Task 8. Credentials validation
+In this task, you will implement the Auth.valid_login method. It should expect email and password required arguments and return a boolean.
+
+Try locating the user by email. If it exists, check the password with bcrypt.checkpw. If it matches return True. In any other case, return False.
+
+Test run
+<Details>
+
+```
+root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_8.py
+True
+False
+False
+```
+</Details>
