@@ -121,7 +121,7 @@ def update_password():
             "message": "Password updated"
         }
         return jsonify(response_data), 200
-    except ValueError:
+    except Exception:
         abort(403)
 
 
