@@ -209,4 +209,13 @@ False
 </Details>
 
 ### 9. Generate UUIDs
+### 10. Get session ID
+Test run 
+<Details>
 
+```
+root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_10.py
+102262ce-c470-4f18-afaa-de9f675f91b7
+None
+```
+</Details>

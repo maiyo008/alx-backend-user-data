@@ -18,6 +18,7 @@ def _hash_password(password: str) -> bytes:
     hash = bcrypt.hashpw(pass_bytes, salt)
     return hash
 
+
 def _generate_uuid() -> str:
     """
     Generate UUIDs
@@ -56,3 +57,15 @@ class Auth:
             return pass_check
         except NoResultFound:
             return False
+
+    def create_session(self, email: str) -> str:
+        """
+        Fetches session id
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+            session_id = _generate_uuid()
+            self._db.update_user(user.id, session_id=session_id)
+            return session_id
+        except NoResultFound:
+            return
