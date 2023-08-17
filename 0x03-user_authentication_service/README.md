@@ -13,6 +13,8 @@ The model will have the following attributes:
 
 Test result
 <Details>
+
+```
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main.py
 users
 users.id: INTEGER
@@ -20,6 +22,7 @@ users.email: VARCHAR(250)
 users.hashed_password: VARCHAR(250)
 users.session_id: VARCHAR(250)
 users.reset_token: VARCHAR(250)
+```
 </Details>
 
 ### Task 1. create user
@@ -27,10 +30,13 @@ Implement the add_user method, which has two required string arguments: email an
 
 Test result
 <Details>
+
+```
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_1.py
 1
 2
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# 
+```
 </Details>
 
 ### Task 2. Find user
@@ -40,11 +46,14 @@ Make sure that SQLAlchemy’s NoResultFound and InvalidRequestError are raised w
 
 Test result
 <Details>
+
+```
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_2.py
 1
 1
 Not found
 Invalid
+```
 </Details>
 
 ### Task 3. Update user
@@ -56,9 +65,12 @@ If an argument that does not correspond to a user attribute is passed, raise a V
 
 Test result
 <Details>
+
+```
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_3.py
 1
 Password updated
+```
 </Details>
 
 ### Task 3. Hash password
@@ -68,8 +80,11 @@ The returned bytes is a salted hash of the input password, hashed with bcrypt.ha
 
 Test result
 <Details>
+
+```
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_4.py
 b'$2b$12$p6RYNO6jDLcFqfFkUbMh5OcRdFruSxcK967XCtRcAQ/3ShfxYLgnW'
+```
 </Details>
 
 ### Task 5. Register user
@@ -81,7 +96,99 @@ If not, hash the password with _hash_password, save the user to the database usi
 
 Test Result
 <Details>
+
+```
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_5.py
 successfully created a new user!
 could not create a new user: User me@me.com already exists
+```
 </Details>
+
+### Task 6. Basic Flask app
+In this task, you will set up a basic Flask app.
+
+Create a Flask app that has a single GET route ("/") and use flask.jsonify to return a JSON payload of the form:
+
+### 7. Register user
+In this task, you will implement the end-point to register a user. Define a users function that implements the POST /users route.
+
+Import the Auth object and instantiate it at the root of the module
+
+The end-point should expect two form data fields: "email" and "password". If the user does not exist, the end-point should register it and respond with the following JSON payload:
+
+`{"email": "<registered email>", "message": "user created"}`
+If the user is already registered, catch the exception and return a JSON payload of the form
+
+`{"message": "email already registered"}`
+and return a 400 status code
+
+Test result
+Terminal 1.
+<Details>
+
+```
+root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 app.py
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://172.17.0.2:5000/ (Press CTRL+C to quit)
+127.0.0.1 - - [17/Aug/2023 11:16:56] "POST /users HTTP/1.1" 200 -
+127.0.0.1 - - [17/Aug/2023 11:17:29] "POST /users HTTP/1.1" 200 -
+```
+</Details>
+Terminal 2.
+<Details>
+
+```
+root@2c462bd13a86:~# curl -XPOST localhost:5000/users -d 'email=bob@me.com' -d 'password=mySuperPwd' -v
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 5000 (#0)
+> POST /users HTTP/1.1
+> Host: localhost:5000
+> User-Agent: curl/7.58.0
+> Accept: */*
+> Content-Length: 36
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 36 out of 36 bytes
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Content-Type: application/json
+< Content-Length: 48
+< Server: Werkzeug/2.0.3 Python/3.6.9
+< Date: Thu, 17 Aug 2023 08:16:56 GMT
+< 
+{"email":"bob@me.com","message":"user created"}
+* Closing connection 0
+root@2c462bd13a86:~# curl -XPOST localhost:5000/users -d 'email=bob@me.com' -d 'password=mySuperPwd' -v
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 5000 (#0)
+> POST /users HTTP/1.1
+> Host: localhost:5000
+> User-Agent: curl/7.58.0
+> Accept: */*
+> Content-Length: 36
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 36 out of 36 bytes
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Content-Type: application/json
+< Content-Length: 39
+< Server: Werkzeug/2.0.3 Python/3.6.9
+< Date: Thu, 17 Aug 2023 08:17:29 GMT
+< 
+{"message":"email already registered"}
+* Closing connection 0
+root@2c462bd13a86:~# 
+```
+</Details>
+
