@@ -71,3 +71,17 @@ Test result
 root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_4.py
 b'$2b$12$p6RYNO6jDLcFqfFkUbMh5OcRdFruSxcK967XCtRcAQ/3ShfxYLgnW'
 </Details>
+
+### Task 5. Register user
+Auth.register_user should take mandatory email and password string arguments and return a User object.
+
+If a user already exist with the passed email, raise a ValueError with the message User <user's email> already exists.
+
+If not, hash the password with _hash_password, save the user to the database using self._db and return the User object.
+
+Test Result
+<Details>
+root@2c462bd13a86:~/alx-backend-user-data/0x03-user_authentication_service# python3 main_5.py
+successfully created a new user!
+could not create a new user: User me@me.com already exists
+</Details>
