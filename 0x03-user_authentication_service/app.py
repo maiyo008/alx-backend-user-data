@@ -2,8 +2,9 @@
 """
 Flask app
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 from auth import Auth
+from sqlalchemy.orm.exc import NoResultFound
 
 
 AUTH = Auth()
@@ -34,6 +35,34 @@ def register_user():
         })
     except ValueError:
         return jsonify({"message": "email already registered"})
+
+
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
+def login():
+    """
+    Login
+    """
+    email = request.form.get('email')
+    password = request.form.get('password')
+    if not email:
+        return jsonify({"error": "email missing"}), 400
+    if not password:
+        return jsonify({"error": "password missing"}), 400
+    try:
+        login_auth = AUTH.valid_login(email, password)
+        if login_auth is True:
+            session_id = AUTH.create_session(email)
+
+            response = jsonify({
+                "email": "{}".format(email),
+                "message": "logged in"
+            })
+            response.set_cookie("session_id", session_id)
+            return response
+        else:
+            abort(401)
+    except NoResultFound:
+        abort(401)
 
 
 if __name__ == "__main__":
